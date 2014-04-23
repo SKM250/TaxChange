@@ -7,19 +7,20 @@ class changeModel {
     private $income_id;
     private $value;
     private $date;
+    private $status;
 
     /* -------------------------------------------------------------------------------------------------------------- */
 
-    public function __construct($cpr, $income_id, $value) {
+    public function __construct($id, $cpr, $income_id, $value, $date, $status) {
 
-       
+        $this->id = $id;
         $this->cpr = $cpr;
         $this->income_id = $income_id;
         $this->value = $value;
-       
-        
+        $this->date = $date;
+        $this->status = $status;
     }
-
+   
     /* -------------------------------------------------------------------------------------------------------------- */
 
     public function setId($id) {
@@ -65,11 +66,15 @@ class changeModel {
         }
     }
 
+    public function setStatus($status) {
+        $this->status = $status;
+    }
+
     /* -------------------------------------------------------------------------------------------------------------- */
 
     public function getId() {
 
-        return $this->idthis;
+        return $this->id;
     }
 
     public function getCpr() {
@@ -86,6 +91,10 @@ class changeModel {
 
     public function getDate() {
         return $this->date;
+    }
+
+    public function getStatus() {
+        return $this->status;
     }
 
 }

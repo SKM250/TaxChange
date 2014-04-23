@@ -5,11 +5,10 @@ require_once('../annual_statement/models/changeModel.php');
 
 class changeController {
 
-    public static function getChange($cpr) {
-
+    public static function getChange($id) {
 
         // Get the selected annualStatements from the database
-        $scenario = changeMapper::select($cpr);
+        $scenario = changeMapper::select($id);
 
         // Return the results
         return $scenario;
@@ -24,8 +23,12 @@ class changeController {
 
     public static function insert($changeModel) {
 
-        // Insert book
         changeMapper::insert($changeModel);
+
+    }
+    public static function delete($id) {
+
+        changeMapper::delete($id);
 
     }
 

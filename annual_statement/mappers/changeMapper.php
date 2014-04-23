@@ -12,13 +12,13 @@
             private static function create($line) {
 
                 // Create new object
-                $current = new changeModel($line['id'], $line['cpr'], $line['income_id'], $line['value'], $line['date']);
+                $current = new changeModel($line['id'], $line['cpr'], $line['income_id'], $line['value'], $line['date'], $line['status']);
 
                 // Return object
                 return $current;
             }
 
-            public static function select($cpr) {
+            public static function select($id) {
 
                 // Get database connection
                 $db = databaseConnector::getConnection();
@@ -29,10 +29,10 @@
                 try {
 
                     // Prepare SQL statement
-                    $pstmt = $db->prepare("SELECT * FROM person WHERE cpr=:cpr;");
+                    $pstmt = $db->prepare("SELECT * FROM taxchanges WHERE id=:id;");
 
                     // Bind SQL values
-                    $pstmt->bindValue(':cpr', $cpr, PDO::PARAM_INT);
+                    $pstmt->bindValue(':id', $id, PDO::PARAM_INT);
 
                     // Execute SQL query
                     $pstmt->execute();
@@ -46,7 +46,7 @@
                     foreach ($pstmt as $line) {
 
                         // Add current object to array
-                        $array[$line['cpr']] = self::create($line);
+                        $array[$line['id']] = self::create($line);
                     }
                 } catch (PDOException $e) {
                     
@@ -55,6 +55,7 @@
                 return $array;
             }
 
+            //Select all fields in taxChanges table
             public static function selectAll() {
 
                 // Get database connection
@@ -79,7 +80,45 @@
                     foreach ($pstmt as $line) {
 
                         // Add current object to array
-                        $array[$line['cpr']] = self::create($line);
+                        $array[$line['id']] = self::create($line);
+                    }
+                } catch (PDOException $e) {
+                    
+                }
+
+                return $array;
+            }
+            
+            //Delete all fields in TaxChanges table based on id 
+            public static function delete($id) {
+
+                // Get database connection
+                $db = databaseConnector::getConnection();
+
+                // Create a new scenario
+
+
+                try {
+
+                    // Prepare SQL statement
+                    $pstmt = $db->prepare("DELETE FROM taxchanges WHERE id=:id;");
+
+                    // Bind SQL values
+                    $pstmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+                    // Execute SQL query
+                    $pstmt->execute();
+
+                    $array = array();
+
+                    // Fetch all results
+                    $pstmt = $pstmt->fetchAll();
+
+                    // Loop all results as lines
+                    foreach ($pstmt as $line) {
+
+                        // Add current object to array
+                        $array[$line['id']] = self::create($line);
                     }
                 } catch (PDOException $e) {
                     
@@ -148,8 +187,6 @@
 //                                var_dump($changeModel);
 //                                var_dump($pstmt);
 //                                $pstmt->debugDumpParams();
-
-                  
                 } catch (PDOException $e) {
 
                     echo '' . $e;

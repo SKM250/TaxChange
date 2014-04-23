@@ -5,7 +5,7 @@
     </head>
     <body>
         <?php
-        require_once('..//databaseConnector.php');
+        require_once('..//databaseConnector_Master.php');
 
         class incomeInfoMapper {
 
@@ -21,7 +21,7 @@
             public static function select($cpr) {
 
                 // Get database connection
-                $db = databaseConnector::getConnection();
+                $db = databaseConnectorMaster::getConnection();
 
                 // Create a new scenario
 
@@ -68,26 +68,45 @@
                 try {
 
                     // Prepare SQL statement
-                    $pstmt = $db->prepare("UPDATE tax SET cpr=:cpr, first_name=:first_name, last_name=:last_name, address=:address, email=:email, phone=:phone WHERE cpr=:cpr;");
+                    $pstmt = $db->prepare("UPDATE income_info SET value=:value WHERE idincome_info=:idincome_info;");
 
                     // Bind SQL values
-                    $pstmt->bindValue(':cpr', $person->getCpr(), PDO::PARAM_INT);
-                    $pstmt->bindValue(':first_name', $person->first_name(), PDO::PARAM_STR);
-                    $pstmt->bindValue(':last_name', $person->last_name(), PDO::PARAM_STR);
-                    $pstmt->bindValue(':address', $person->getAddress(), PDO::PARAM_STR);
-                    $pstmt->bindValue(':email', $person->getEmail(), PDO::PARAM_STR);
-                    $pstmt->bindValue(':phone', $person->getphone(), PDO::PARAM_STR);
-
+                    $pstmt->bindValue(':value', $income_infos->getValue(), PDO::PARAM_INT);
+                    $pstmt->bindValue(':idincome_info', $income_infos->getIdincome_info(), PDO::PARAM_INT);
                     // Execute SQL query
                     $pstmt->execute();
-
-
-
-                    // Update the current session
-                    if ($_SESSION['person']->getCpr() == $person->getCpr()) {
-                        $_SESSION['person'] = $annualStatement;
-                    }
                 } catch (PDOException $e) {
+                    echo '' . $e;
+                }
+            }
+
+            public static function insert($incomeInfoModel) {
+
+                // Get database connection
+                $db = databaseConnectorMaster::getConnection();
+
+
+                try {
+
+                    // Prepare SQL statement
+                    $pstmt = $db->prepare("INSERT INTO `income_info`(`cpr`, `idincome`, `value`) VALUES (:cpr, :idincome, :value)");
+
+
+                    // Bind SQL values for statement
+
+                    $pstmt->bindValue(':cpr', $incomeInfoModel->getCpr(), PDO::PARAM_INT);
+                    $pstmt->bindValue(':idincome', $incomeInfoModel->getIdincome(), PDO::PARAM_INT);
+                    $pstmt->bindValue(':value', $incomeInfoModel->getValue(), PDO::PARAM_INT);
+
+
+                    // Execute statement
+                    $pstmt->execute();
+
+//                                var_dump($changeModel);
+//                                var_dump($pstmt);
+//                                $pstmt->debugDumpParams();
+                } catch (PDOException $e) {
+
                     echo '' . $e;
                 }
             }

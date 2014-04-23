@@ -17,7 +17,14 @@ class incomeInfoController {
         // Return the results
         return $scenario;
     }
+    
+    public static function insert($incomeInfoModel) {
 
+        changeMapper::insert($incomeInfoModel);
+
+    }
+    
+    
 }
 
 ?>

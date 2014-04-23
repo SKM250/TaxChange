@@ -1,41 +1,55 @@
 <?php
 require_once ('./autoLoader.php');
+echo '<h1>To be implemented</h1>';
 ?>
-
 <head>
     <meta charset="utf-8">
-    Tax changes need to have an Administrator approval!
+    Tax changes need to be authorised by an Administrator!
 </head>
 <body>
-    <?php
-
-    $changes = changeController::getAllChanges();
-    foreach ($changes as $changeModel) {
-        $cpr = $changeModel->getCpr();
-        ?>
-
-
-
-        <br></br>
-        <br></br>
-        <table border="1" style="width:390px"> 
+    <form action="approve_disapproveChanges.php" method="post">
+        <table border="1" style="width:600px"> 
             <tr>
-                <td><?php echo $cpr; ?></td>     
-                <td>50,000</td> 
-                <td>22,000</td>
-                <td> <button type="submit" onclick="alert('Not implemented yet')">Approve</button><button type="submit" onclick="alert('Not implemented yet')">Disapprove</button></td>
+                <th>ID</th>
+                <th>CPR</th>
+                <th>INCOME ID</th>
+                <th>VALUE</th>
+                <th>DATE</th>
+                <th>APPROVE/DISAPPROVE</th>
             </tr>
-            <tr>
-                <td><?php echo $cpr; ?></td>
-                <td>40,000</td> 
-                <td>1,500</td>
-                <td> <button type="submit" onclick="alert('Not implemented yet')">Approve</button><button type="submit" onclick="alert('Not implemented yet')">Disapprove</button></td>
-            </tr>
-
-
+            <?php
+            $changes = changeController::getAllChanges();
+            var_dump($changes);
+            foreach ($changes as $changeModel) {
+                $id = $changeModel->getId();
+                $cpr = $changeModel->getCpr();
+                $income_id = $changeModel->getIncome_id();
+                $value = $changeModel->getValue();
+                $date = $changeModel->getDate();
+                $status = $changeModel->getStatus();
+                if ($status === "Disapprove") {
+                    ?>
+                    <tr style="color: red;">
+                        <td style="text-decoration: line-through;"><?php echo $id; ?></td>
+                        <td style="text-decoration: line-through;"><?php echo $cpr; ?></td>     
+                        <td style="text-decoration: line-through;"><?php echo $income_id; ?></td> 
+                        <td style="text-decoration: line-through;"><?php echo $value; ?></td>
+                        <td style="text-decoration: line-through;"><?php echo $date; ?></td>
+                        <td> <input type="submit" name="approve <?php echo $id; ?>" value="Approve"></td>
+                    </tr>
+                <?php } else { ?>
+                    <tr>
+                        <td><?php echo $id; ?></td>
+                        <td><?php echo $cpr; ?></td>     
+                        <td><?php echo $income_id; ?></td> 
+                        <td><?php echo $value; ?></td>
+                        <td><?php echo $date; ?></td>
+                        <td> <input type="submit" name="approve <?php echo $id; ?>" value="Approve"><input type="submit" name="disapprove <?php echo $id; ?>" value="Disapprove"></td>
+                    </tr>
+                <?php
+                }
+            }
+            ?>
         </table>
-
-<?php } ?>
+    </form>
 </body>
-
-
