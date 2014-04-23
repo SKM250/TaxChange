@@ -123,6 +123,39 @@
                 }
             }
 
+            public static function insert($changeModel) {
+
+                // Get database connection
+                $db = databaseConnector::getConnection();
+
+
+                try {
+
+                    // Prepare SQL statement
+                    $pstmt = $db->prepare("INSERT INTO `taxchanges`(`cpr`, `income_id`, `value`) VALUES (:cpr, :income_id, :value)");
+
+
+                    // Bind SQL values for statement
+
+                    $pstmt->bindValue(':cpr', $changeModel->getCpr(), PDO::PARAM_INT);
+                    $pstmt->bindValue(':income_id', $changeModel->getIncome_id(), PDO::PARAM_INT);
+                    $pstmt->bindValue(':value', $changeModel->getValue(), PDO::PARAM_INT);
+
+
+                    // Execute statement
+                    $pstmt->execute();
+
+//                                var_dump($changeModel);
+//                                var_dump($pstmt);
+//                                $pstmt->debugDumpParams();
+
+                  
+                } catch (PDOException $e) {
+
+                    echo '' . $e;
+                }
+            }
+
             /* -------------------------------------------------------------------------------------------------------------- */
         }
         ?>

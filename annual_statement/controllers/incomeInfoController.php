@@ -1,8 +1,7 @@
 <?php
 
-require_once('../annual_statement/mappers/personMapper.php');
-require_once('../annual_statement/models/personModel.php');
-require_once('../annual_statement/controllers/personController.php');
+
+
 require_once('../annual_statement/mappers/incomeInfoMapper.php');
 require_once('../annual_statement/models/incomeInfoModel.php');
 require_once('../annual_statement/controllers/incomeInfoController.php');

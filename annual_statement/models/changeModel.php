@@ -10,13 +10,14 @@ class changeModel {
 
     /* -------------------------------------------------------------------------------------------------------------- */
 
-    public function __construct($id, $cpr, $income_id, $value, $date) {
+    public function __construct($cpr, $income_id, $value) {
 
-        $this->id = $id;
+       
         $this->cpr = $cpr;
         $this->income_id = $income_id;
         $this->value = $value;
-        $this->date = $date;
+       
+        
     }
 
     /* -------------------------------------------------------------------------------------------------------------- */
